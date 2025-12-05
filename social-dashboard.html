@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social Media Analytics Dashboard - Alex Morgan</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .dashboard-header {
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        color: white;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: #1e293b;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        transition: transform 0.3s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: #6366f1;
+      }
+
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .stat-icon {
+        font-size: 2rem;
+      }
+
+      .stat-change {
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .stat-change.positive {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+      }
+
+      .stat-change.negative {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+      }
+
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+
+        -webkit-text-fill-color: transparent;
+      }
+
+      .stat-label {
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+
+      .chart-container {
+        background: #1e293b;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+      }
+
+      .chart-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .chart-title {
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+
+      .chart {
+        height: 300px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        gap: 1rem;
+        padding: 1rem;
+        background: #0f172a;
+        border-radius: 10px;
+      }
+
+      .bar {
+        flex: 1;
+        background: linear-gradient(to top, #6366f1, #ec4899);
+        border-radius: 5px 5px 0 0;
+        position: relative;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .bar:hover {
+        opacity: 0.8;
+        transform: scaleY(1.05);
+      }
+
+      .bar-label {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #94a3b8;
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+
+      .bar-value {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #cbd5e1;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .platform-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .platform-card {
+        background: #1e293b;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .platform-icon {
+        font-size: 3rem;
+      }
+
+      .platform-info {
+        flex: 1;
+      }
+
+      .platform-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+
+      .platform-stats {
+        display: flex;
+        gap: 1.5rem;
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+
+      .engagement-ring {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        position: relative;
+      }
+
+      .engagement-ring::before {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        border-radius: 50%;
+        padding: 3px;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="project-page">
+      <div class="container">
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+        <div class="project-header">
+          <h1>📊 Social Media Analytics Dashboard</h1>
+          <p style="color: #94a3b8; margin-top: 0.5rem">
+            Real-time analytics platform for tracking social media performance
+          </p>
+        </div>
+
+        <div class="dashboard-container">
+          <div class="dashboard-header">
+            <h2 style="margin: 0">Performance Overview</h2>
+            <p style="margin: 0.5rem 0 0; opacity: 0.9">
+              Last updated: Just now
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-icon">👥</span>
+                <span class="stat-change positive">+12.5%</span>
+              </div>
+              <div class="stat-value" id="followers">0</div>
+              <div class="stat-label">Total Followers</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-icon">❤️</span>
+                <span class="stat-change positive">+8.2%</span>
+              </div>
+              <div class="stat-value" id="engagement">0</div>
+              <div class="stat-label">Engagement Rate</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-icon">📈</span>
+                <span class="stat-change positive">+15.7%</span>
+              </div>
+              <div class="stat-value" id="reach">0</div>
+              <div class="stat-label">Total Reach</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <span class="stat-icon">📝</span>
+                <span class="stat-change negative">-3.1%</span>
+              </div>
+              <div class="stat-value" id="posts">0</div>
+              <div class="stat-label">Posts This Month</div>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3 class="chart-title">Weekly Engagement</h3>
+              <p style="color: #94a3b8; margin: 0">
+                Average interactions per day
+              </p>
+            </div>
+            <div class="chart" id="chart"></div>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3 class="chart-title">Platform Performance</h3>
+              <p style="color: #94a3b8; margin: 0">
+                Current metrics across all platforms
+              </p>
+            </div>
+            <div class="platform-list">
+              <div class="platform-card">
+                <span class="platform-icon">📘</span>
+                <div class="platform-info">
+                  <div class="platform-name">Facebook</div>
+                  <div class="platform-stats">
+                    <span>45.2K followers</span>
+                    <span>•</span>
+                    <span>3.2% growth</span>
+                  </div>
+                </div>
+                <div class="engagement-ring">8.5%</div>
+              </div>
+
+              <div class="platform-card">
+                <span class="platform-icon">📷</span>
+                <div class="platform-info">
+                  <div class="platform-name">Instagram</div>
+                  <div class="platform-stats">
+                    <span>62.8K followers</span>
+                    <span>•</span>
+                    <span>5.7% growth</span>
+                  </div>
+                </div>
+                <div class="engagement-ring">12.3%</div>
+              </div>
+
+              <div class="platform-card">
+                <span class="platform-icon">🐦</span>
+                <div class="platform-info">
+                  <div class="platform-name">Twitter</div>
+                  <div class="platform-stats">
+                    <span>38.5K followers</span>
+                    <span>•</span>
+                    <span>4.1% growth</span>
+                  </div>
+                </div>
+                <div class="engagement-ring">6.8%</div>
+              </div>
+
+              <div class="platform-card">
+                <span class="platform-icon">💼</span>
+                <div class="platform-info">
+                  <div class="platform-name">LinkedIn</div>
+                  <div class="platform-stats">
+                    <span>28.3K followers</span>
+                    <span>•</span>
+                    <span>6.2% growth</span>
+                  </div>
+                </div>
+                <div class="engagement-ring">9.1%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Animate numbers
+      function animateValue(id, start, end, duration, suffix = "") {
+        const obj = document.getElementById(id);
+        const range = end - start;
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let current = start;
+
+        const timer = setInterval(() => {
+          current += increment * Math.ceil(range / 100);
+          if (
+            (increment > 0 && current >= end) ||
+            (increment < 0 && current <= end)
+          ) {
+            current = end;
+            clearInterval(timer);
+          }
+          obj.textContent = current.toLocaleString() + suffix;
+        }, stepTime);
+      }
+
+      // Animate stats
+      setTimeout(() => {
+        animateValue("followers", 0, 175000, 2000);
+        animateValue("engagement", 0, 8.7, 2000, "%");
+        animateValue("reach", 0, 2400000, 2000);
+        animateValue("posts", 0, 48, 2000);
+      }, 500);
+
+      // Create chart
+      const chartData = [
+        { day: "Mon", value: 450 },
+        { day: "Tue", value: 680 },
+        { day: "Wed", value: 520 },
+        { day: "Thu", value: 890 },
+        { day: "Fri", value: 750 },
+        { day: "Sat", value: 920 },
+        { day: "Sun", value: 650 },
+      ];
+
+      const chart = document.getElementById("chart");
+      const maxValue = Math.max(...chartData.map((d) => d.value));
+
+      chartData.forEach((data) => {
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        const height = (data.value / maxValue) * 100;
+        bar.style.height = "0%";
+
+        const label = document.createElement("div");
+        label.className = "bar-label";
+        label.textContent = data.day;
+
+        const value = document.createElement("div");
+        value.className = "bar-value";
+        value.textContent = data.value;
+
+        bar.appendChild(label);
+        bar.appendChild(value);
+        chart.appendChild(bar);
+
+        // Animate bar height
+        setTimeout(() => {
+          bar.style.height = height + "%";
+        }, 100);
+      });
+
+      // Update time
+      setInterval(() => {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        document.querySelector(
+          ".dashboard-header p"
+        ).textContent = `Last updated: ${timeString}`;
+      }, 1000);
+    </script>
+  </body>
+</html>

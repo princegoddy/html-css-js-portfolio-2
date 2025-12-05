@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Website Builder - Alex Morgan</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="builder.css" />
+  </head>
+  <body>
+    <div class="project-page">
+      <div class="container">
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+        <div class="project-header">
+          <h1>🎨 Portfolio Website Builder</h1>
+          <p style="color: #94a3b8; margin-top: 0.5rem">
+            Create your professional portfolio in minutes with drag-and-drop
+            simplicity
+          </p>
+        </div>
+
+        <div class="builder-container">
+          <div class="builder-sidebar">
+            <h3 class="sidebar-title">⚙️ Customize</h3>
+
+            <div class="control-group">
+              <label class="control-label">Your Name</label>
+              <input
+                type="text"
+                class="control-input"
+                id="nameInput"
+                value="John Doe"
+              />
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Title/Role</label>
+              <input
+                type="text"
+                class="control-input"
+                id="titleInput"
+                value="Full-Stack Developer"
+              />
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Color Theme</label>
+              <div class="color-picker">
+                <div
+                  class="color-option"
+                  style="background: linear-gradient(135deg, #6366f1, #ec4899)"
+                  data-colors="#6366f1,#ec4899"
+                  onclick="changeColors(this)"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: linear-gradient(135deg, #06b6d4, #10b981)"
+                  data-colors="#06b6d4,#10b981"
+                  onclick="changeColors(this)"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: linear-gradient(135deg, #f59e0b, #ef4444)"
+                  data-colors="#f59e0b,#ef4444"
+                  onclick="changeColors(this)"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: linear-gradient(135deg, #8b5cf6, #ec4899)"
+                  data-colors="#8b5cf6,#ec4899"
+                  onclick="changeColors(this)"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: linear-gradient(135deg, #14b8a6, #06b6d4)"
+                  data-colors="#14b8a6,#06b6d4"
+                  onclick="changeColors(this)"
+                ></div>
+                <div
+                  class="color-option"
+                  style="background: linear-gradient(135deg, #0f172a, #475569)"
+                  data-colors="#0f172a,#475569"
+                  onclick="changeColors(this)"
+                ></div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Template Style</label>
+              <div class="template-options">
+                <button
+                  class="template-btn"
+                  onclick="changeTemplate(this, 'modern')"
+                >
+                  <strong>Modern</strong><br />
+                  <small style="color: #94a3b8">Clean and minimal</small>
+                </button>
+                <button
+                  class="template-btn"
+                  onclick="changeTemplate(this, 'creative')"
+                >
+                  <strong>Creative</strong><br />
+                  <small style="color: #94a3b8">Bold and vibrant</small>
+                </button>
+                <button
+                  class="template-btn"
+                  onclick="changeTemplate(this, 'professional')"
+                >
+                  <strong>Professional</strong><br />
+                  <small style="color: #94a3b8">Business ready</small>
+                </button>
+              </div>
+            </div>
+
+            <button class="export-btn" onclick="exportPortfolio()">
+              📥 Export HTML
+            </button>
+          </div>
+
+          <div class="preview-container">
+            <div class="preview-header">
+              <h3 class="preview-title">Live Preview</h3>
+              <div class="preview-mode">
+                <button class="mode-btn" onclick="changeMode('desktop', this)">
+                  💻 Desktop
+                </button>
+                <button class="mode-btn" onclick="changeMode('mobile', this)">
+                  📱 Mobile
+                </button>
+              </div>
+            </div>
+
+            <div class="portfolio-preview" id="portfolioPreview">
+              <div class="preview-hero" id="heroSection">
+                <div class="preview-name" id="previewName">John Doe</div>
+                <div class="preview-title-text" id="previewTitle">
+                  Full-Stack Developer
+                </div>
+              </div>
+
+              <div class="preview-content">
+                <div class="preview-section">
+                  <h3 class="section-title">About Me</h3>
+                  <p class="preview-text">
+                    Passionate developer with expertise in creating modern web
+                    applications. I love turning ideas into reality through
+                    clean code and intuitive design.
+                  </p>
+                </div>
+
+                <div class="preview-section">
+                  <h3 class="section-title">Skills</h3>
+                  <div class="skills-preview">
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">MongoDB</span>
+                    <span class="skill-tag">UI/UX Design</span>
+                  </div>
+                </div>
+
+                <div class="preview-section">
+                  <h3 class="section-title">Projects</h3>
+                  <div class="projects-preview">
+                    <div class="project-preview">
+                      <h4>E-Commerce Platform</h4>
+                      <p>Full-featured online store with payment integration</p>
+                    </div>
+                    <div class="project-preview">
+                      <h4>Social Dashboard</h4>
+                      <p>Analytics platform for social media metrics</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="builder.js"></script>
+  </body>
+</html>

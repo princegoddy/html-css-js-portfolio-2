@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Scheduling Tool - Alex Morgan</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .scheduler-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 2rem;
+      }
+
+      .schedule-form {
+        background: #1e293b;
+        padding: 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+      }
+
+      .form-title {
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-field {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-field label {
+        display: block;
+        color: white;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .form-field input,
+      .form-field textarea,
+      .form-field select {
+        width: 100%;
+        padding: 0.8rem;
+        background: #0f172a;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 8px;
+        color: #cbd5e1;
+        font-family: inherit;
+      }
+
+      .form-field input:focus,
+      .form-field textarea:focus,
+      .form-field select:focus {
+        outline: none;
+        border-color: #6366f1;
+      }
+
+      .form-field textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .platform-select {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+
+      .platform-option {
+        padding: 0.8rem;
+        background: #0f172a;
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .platform-option:hover {
+        border-color: #6366f1;
+      }
+
+      .platform-option.selected {
+        background: rgba(99, 102, 241, 0.2);
+        border-color: #6366f1;
+      }
+
+      .platform-icon {
+        font-size: 1.5rem;
+      }
+
+      .schedule-btn {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, #6366f1, #ec4899);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .schedule-btn:hover {
+        transform: scale(1.02);
+      }
+
+      .scheduled-posts {
+        background: #1e293b;
+        padding: 2rem;
+        border-radius: 15px;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+      }
+
+      .posts-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .posts-title {
+        font-size: 1.5rem;
+        color: white;
+      }
+
+      .posts-count {
+        background: rgba(99, 102, 241, 0.2);
+        color: #6366f1;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+
+      .post-card {
+        background: #0f172a;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border-left: 4px solid #6366f1;
+        transition: all 0.3s;
+      }
+
+      .post-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 20px rgba(99, 102, 241, 0.2);
+      }
+
+      .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+      }
+
+      .post-platforms {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .post-platform-badge {
+        font-size: 1.2rem;
+      }
+
+      .post-status {
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .status-scheduled {
+        background: rgba(251, 191, 36, 0.2);
+        color: #fbbf24;
+      }
+
+      .status-published {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+      }
+
+      .post-content {
+        color: #cbd5e1;
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+
+      .post-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+
+      .post-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .action-btn {
+        padding: 0.5rem 1rem;
+        background: transparent;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 5px;
+        color: #cbd5e1;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .action-btn:hover {
+        background: rgba(99, 102, 241, 0.2);
+        border-color: #6366f1;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #94a3b8;
+      }
+
+      .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="project-page">
+      <div class="container">
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+        <div class="project-header">
+          <h1>📅 Content Scheduling Tool</h1>
+          <p style="color: #94a3b8; margin-top: 0.5rem">
+            Manage and schedule social media posts across multiple platforms
+          </p>
+        </div>
+
+        <div class="scheduler-container">
+          <div class="schedule-form">
+            <h3 class="form-title">Create New Post</h3>
+            <form id="scheduleForm">
+              <div class="form-field">
+                <label>Content</label>
+                <textarea
+                  id="postContent"
+                  placeholder="What do you want to share?"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-field">
+                <label>Select Platforms</label>
+                <div class="platform-select">
+                  <div class="platform-option" data-platform="facebook">
+                    <span class="platform-icon">📘</span>
+                    <span>Facebook</span>
+                  </div>
+                  <div class="platform-option" data-platform="instagram">
+                    <span class="platform-icon">📷</span>
+                    <span>Instagram</span>
+                  </div>
+                  <div class="platform-option" data-platform="twitter">
+                    <span class="platform-icon">🐦</span>
+                    <span>Twitter</span>
+                  </div>
+                  <div class="platform-option" data-platform="linkedin">
+                    <span class="platform-icon">💼</span>
+                    <span>LinkedIn</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label>Schedule Date & Time</label>
+                <input type="datetime-local" id="scheduleTime" required />
+              </div>
+
+              <button type="submit" class="schedule-btn">Schedule Post</button>
+            </form>
+          </div>
+
+          <div class="scheduled-posts">
+            <div class="posts-header">
+              <h3 class="posts-title">Scheduled Posts</h3>
+              <span class="posts-count" id="postsCount">0 posts</span>
+            </div>
+            <div id="postsList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let selectedPlatforms = new Set();
+      let scheduledPosts = [];
+
+      // Platform selection
+      document.querySelectorAll(".platform-option").forEach((option) => {
+        option.addEventListener("click", () => {
+          const platform = option.dataset.platform;
+          option.classList.toggle("selected");
+
+          if (selectedPlatforms.has(platform)) {
+            selectedPlatforms.delete(platform);
+          } else {
+            selectedPlatforms.add(platform);
+          }
+        });
+      });
+
+      // Set minimum datetime to now
+      const datetimeInput = document.getElementById("scheduleTime");
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      datetimeInput.min = now.toISOString().slice(0, 16);
+      datetimeInput.value = now.toISOString().slice(0, 16);
+
+      // Form submission
+      document
+        .getElementById("scheduleForm")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          if (selectedPlatforms.size === 0) {
+            alert("Please select at least one platform");
+            return;
+          }
+
+          const content = document.getElementById("postContent").value;
+          const scheduleTime = document.getElementById("scheduleTime").value;
+
+          const post = {
+            id: Date.now(),
+            content: content,
+            platforms: Array.from(selectedPlatforms),
+            scheduleTime: new Date(scheduleTime),
+            status: "scheduled",
+          };
+
+          scheduledPosts.unshift(post);
+          renderPosts();
+
+          // Reset form
+          document.getElementById("scheduleForm").reset();
+          document
+            .querySelectorAll(".platform-option")
+            .forEach((opt) => opt.classList.remove("selected"));
+          selectedPlatforms.clear();
+          datetimeInput.value = now.toISOString().slice(0, 16);
+
+          // Show success message
+          alert("Post scheduled successfully!");
+        });
+
+      function getPlatformIcon(platform) {
+        const icons = {
+          facebook: "📘",
+          instagram: "📷",
+          twitter: "🐦",
+          linkedin: "💼",
+        };
+        return icons[platform] || "📱";
+      }
+
+      function formatDate(date) {
+        return new Date(date).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function deletePost(id) {
+        if (confirm("Are you sure you want to delete this post?")) {
+          scheduledPosts = scheduledPosts.filter((post) => post.id !== id);
+          renderPosts();
+        }
+      }
+
+      function renderPosts() {
+        const postsList = document.getElementById("postsList");
+        const postsCount = document.getElementById("postsCount");
+
+        postsCount.textContent = `${scheduledPosts.length} post${
+          scheduledPosts.length !== 1 ? "s" : ""
+        }`;
+
+        if (scheduledPosts.length === 0) {
+          postsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3 style="color: white; margin-bottom: 0.5rem;">No scheduled posts</h3>
+                        <p>Create your first scheduled post using the form</p>
+                    </div>
+                `;
+          return;
+        }
+
+        postsList.innerHTML = scheduledPosts
+          .map(
+            (post) => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-platforms">
+                            ${post.platforms
+                              .map(
+                                (p) =>
+                                  `<span class="post-platform-badge">${getPlatformIcon(
+                                    p
+                                  )}</span>`
+                              )
+                              .join("")}
+                        </div>
+                        <span class="post-status status-${post.status}">${
+              post.status
+            }</span>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-meta">
+                        <span>📅 ${formatDate(post.scheduleTime)}</span>
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="deletePost(${
+                              post.id
+                            })">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // Add some sample posts
+      scheduledPosts = [
+        {
+          id: 1,
+          content:
+            "Excited to announce our new product launch! Stay tuned for amazing updates 🚀",
+          platforms: ["facebook", "twitter", "linkedin"],
+          scheduleTime: new Date(Date.now() + 2 * 60 * 60 * 1000),
+          status: "scheduled",
+        },
+        {
+          id: 2,
+          content:
+            "Check out our latest blog post on web development trends in 2025! Link in bio 💻",
+          platforms: ["instagram", "twitter"],
+          scheduleTime: new Date(Date.now() + 5 * 60 * 60 * 1000),
+          status: "scheduled",
+        },
+        {
+          id: 3,
+          content:
+            "Thank you for 10K followers! Your support means everything to us ❤️",
+          platforms: ["facebook", "instagram", "twitter", "linkedin"],
+          scheduleTime: new Date(Date.now() - 2 * 60 * 60 * 1000),
+          status: "published",
+        },
+      ];
+
+      renderPosts();
+    </script>
+  </body>
+</html>
