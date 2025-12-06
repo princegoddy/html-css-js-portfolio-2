@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Management App - Prince Ugoh-Godwin</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="task-manager.css" />
+  </head>
+  <body>
+    <div class="project-page">
+      <div class="container">
+        <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+
+        <div class="project-header">
+          <h1>✅ Task Management App</h1>
+          <p style="color: #94a3b8; margin-top: 0.5rem">
+            Organize your tasks efficiently with categories, priorities, and
+            progress tracking
+          </p>
+        </div>
+
+        <div class="task-manager-container">
+          <div class="task-manager-header">
+            <div class="header-content">
+              <h2>My Tasks</h2>
+              <div class="task-stats">
+                <span class="stat-item">
+                  <span class="stat-number" id="totalTasks">0</span>
+                  <span class="stat-label">Total</span>
+                </span>
+                <span class="stat-item">
+                  <span class="stat-number" id="completedTasks">0</span>
+                  <span class="stat-label">Done</span>
+                </span>
+                <span class="stat-item">
+                  <span class="stat-number" id="pendingTasks">0</span>
+                  <span class="stat-label">Pending</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="task-content">
+            <div class="task-form-section">
+              <h3>Add New Task</h3>
+              <form class="task-form" id="taskForm">
+                <div class="form-field">
+                  <input
+                    type="text"
+                    id="taskTitle"
+                    placeholder="Task title..."
+                    required
+                  />
+                </div>
+                <div class="form-field">
+                  <textarea
+                    id="taskDescription"
+                    placeholder="Task description..."
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <select id="taskCategory" required>
+                      <option value="">Select Category</option>
+                      <option value="work">💼 Work</option>
+                      <option value="personal">👤 Personal</option>
+                      <option value="shopping">🛒 Shopping</option>
+                      <option value="health">💪 Health</option>
+                      <option value="other">📌 Other</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <select id="taskPriority" required>
+                      <option value="">Select Priority</option>
+                      <option value="high">🔴 High</option>
+                      <option value="medium">🟡 Medium</option>
+                      <option value="low">🟢 Low</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="submit" class="add-task-btn">Add Task</button>
+              </form>
+            </div>
+
+            <div class="tasks-section">
+              <div class="filters">
+                <button class="filter-btn active" data-filter="all">
+                  All Tasks
+                </button>
+                <button class="filter-btn" data-filter="pending">
+                  Pending
+                </button>
+                <button class="filter-btn" data-filter="completed">
+                  Completed
+                </button>
+              </div>
+
+              <div class="tasks-list" id="tasksList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+      <div class="modal-content success">
+        <div class="modal-icon">✓</div>
+        <h3>Task Added Successfully!</h3>
+        <p>Your task has been added to the list.</p>
+        <button class="modal-btn" onclick="closeModal('successModal')">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+      <div class="modal-content error">
+        <div class="modal-icon">⚠️</div>
+        <h3>Delete Task?</h3>
+        <p>
+          Are you sure you want to delete this task? This action cannot be
+          undone.
+        </p>
+        <div class="modal-actions">
+          <button class="modal-btn cancel" onclick="closeModal('deleteModal')">
+            Cancel
+          </button>
+          <button class="modal-btn confirm" onclick="confirmDelete()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="task-manager.js"></script>
+  </body>
+</html>
